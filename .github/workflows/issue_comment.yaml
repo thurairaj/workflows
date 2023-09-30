@@ -1,0 +1,13 @@
+name: Create a comment on new PR
+
+on:
+  pull_request:
+    types: ['opened', 'synchronize']
+
+jobs:
+  comment-with-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "dump github context"
+        run: echo '${{ toJSON(github.event)}}' | jq
+        shell: bash
