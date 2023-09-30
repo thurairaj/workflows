@@ -10,12 +10,12 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      repository-projects: write
+      repository-projects: write 
     steps:
       - name: "dump github context"
         run: echo '${{ toJSON(github.event)}}' | jq
         shell: bash
-      - name: Create comment
+      - name: Create comment with Actions
         uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -26,6 +26,30 @@ jobs:
 
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
+
+  comment-with-api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write 
+    steps:
+      - name: Create comment with APII
+        run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            http://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \ 
+            -f body='Me too' 
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORGANIZATION: ${{ github.event.organisation.login }}
+          REPOSITORY: ${{ github.event.repository.name }}
+          ISSUE_NUMBER: ${{ github.event.pull_request.number }}
+
+
+
 
 # name: Hello world workflow
 
