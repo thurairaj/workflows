@@ -40,12 +40,12 @@ jobs:
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            http://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \ 
+            /repos/${OWNER}/${REPO}/issues/${ISSUE_NUMBER}/comments \
             -f body='Me too' 
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ORGANIZATION: ${{ github.event.repository.owner.login }}
-          REPOSITORY: ${{ github.event.repository.name }}
+          OWNER: ${{ github.event.repository.owner.login }}
+          REPO: ${{ github.event.repository.name }}
           ISSUE_NUMBER: ${{ github.event.pull_request.number }}
 
 
