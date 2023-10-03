@@ -1,5 +1,6 @@
 module.exports = function(results, context) {
-    //console.log(results);
+    console.log(process.env.GITHUB_DIR);
+    console.log(process.env.REPO);
     return `
         <html>
             ${getHead()}
