@@ -30,8 +30,10 @@ jobs:
         run: |
           WARNINGS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalWarnings./ s/.*content=.([0-9-]+).*/\1/p"`
           ERRORS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalErrors./ s/.*content=.([0-9-]+).*/\1/p"`
+          TOTAL=`echo "$WARNINGS+$ERRORS" | bc`
+
           echo $WARNINGS
-          BODY="'$WARNINGS:$ERRORS'"
+          BODY="<h1 style='border-bottom: 0;'>$TOTAL Issues has been identified in this branch</h1><h3 style='margin-top: 5px;margin-bottom: 5px;'>⛔️ $ERRORS Errors</h3><h3 style='margin-top: 5px;margin-bottom: 5px;'>🟡 $WARNINGS Warnings</h3>"
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
