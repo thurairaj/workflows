@@ -19,7 +19,7 @@ jobs:
       - name: Install and Comment 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
           npm ci
-          npm run sonar || exit 0
+          npm run sonar
           
           WARNINGS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalWarnings./ s/.*content=.([0-9-]+).*/\1/p"`
           ERRORS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalErrors./ s/.*content=.([0-9-]+).*/\1/p"`
