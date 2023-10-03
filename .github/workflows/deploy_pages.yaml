@@ -1,10 +1,10 @@
 name: Build and Deploy
 on:
   push:
-    branches:
-      - main
 permissions:
   contents: write
+  pull-requests: write
+  repository-projects: write
 jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
