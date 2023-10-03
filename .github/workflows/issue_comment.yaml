@@ -31,12 +31,13 @@ jobs:
           WARNINGS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalWarnings./ s/.*content=.([0-9-]+).*/\1/p"`
           ERRORS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalErrors./ s/.*content=.([0-9-]+).*/\1/p"`
           echo $WARNINGS
+          BODY=`$WARNINGS:$ERRORS`
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${OWNER}/${REPO}/issues/${ISSUE_NUMBER}/comments \
-            -f body='$WARNINGS:$ERRORS'
+            -f body=$BODY
 
         env:
           GITHUB_DIR: ${{ github.workspace }}
