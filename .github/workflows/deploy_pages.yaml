@@ -21,6 +21,7 @@ jobs:
           npm run sonar || exit 0
         env:
           GITHUB_DIR: ${{ github.workspace }}
+          REPO: ${{ github.event.repository.name }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
