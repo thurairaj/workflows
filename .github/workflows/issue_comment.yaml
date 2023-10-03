@@ -13,53 +13,28 @@ jobs:
       repository-projects: write
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-      - run: npm ci
-      - run: npm run sonar
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
 
+      - name: Install and Comment 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm ci
+          npm run sonar || exit 0
+          
+          WARNINGS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalWarnings./ s/.*content=.([0-9-]+).*/\1/p"`
+          ERRORS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalErrors./ s/.*content=.([0-9-]+).*/\1/p"`
+          
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${OWNER}/${REPO}/issues/${ISSUE_NUMBER}/comments \
+            -f body='${WARNINGS}:${ERRORS}'
 
-
-# - name: Use Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: '20.x'
-#         run: npm ci
-#         run: npm run sonar
-#         run: |
-#           gh api \
-#             --method POST \
-#             -H "Accept: application/vnd.github+json" \
-#             -H "X-GitHub-Api-Version: 2022-11-28" \
-#             /repos/${OWNER}/${REPO}/issues/${ISSUE_NUMBER}/comments \
-#             -f body='Me too'
-#       - env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           OWNER: ${{ github.event.repository.owner.login }}
-#           REPO: ${{ github.event.repository.name }}
-#           ISSUE_NUMBER: ${{ github.event.pull_request.number }}
-# name: Hello world workflow
-
-# on:
-#   push:
-#   pull_request:
-#   workflow_dispatch:
-
-# jobs:
-#   hello:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: hello world
-#         run: echo "Hello World"
-#         shell: bash
-#   goodbye:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: goodbye world
-#         run: echo "Goodbye World"
-#         shell: bash
+        env:
+          GITHUB_DIR: ${{ github.workspace }}
+          REPO: ${{ github.event.repository.name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.event.repository.owner.login }}
+          ISSUE_NUMBER: ${{ github.event.pull_request.number }}
 

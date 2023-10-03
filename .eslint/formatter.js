@@ -24,8 +24,8 @@ function getHead() {
     return `
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta name="envWorkingFolder" content="${process.env.GITHUB_DIR}" >
-            <meta name="envWorkingRepo" content="${process.env.REPO}" >
+            <meta name="totalWarnings" content="9" >
+            <meta name="totalErrors" content="10" >
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
             <style type="text/css">
@@ -193,7 +193,7 @@ function createMessageAccordion(msg, msgId, sanitizedPath, line, sonarContext) {
     return `
         <div class="accordion mb-2 ${ isError ? 'error' : 'warning'}" id="${accordionId}">
             <div class="accordion-item rounded-0">
-                <div class="accordion-button py-1 rounded-0 ${ isError ? 'bg-danger text-white' : 'bg-warning text-dark'}" 
+                <div class="accordion-button collapsed py-1 rounded-0 ${ isError ? 'bg-danger text-white' : 'bg-warning text-dark'}" 
                     data-bs-toggle="collapse" 
                     data-bs-target="#${accordionMsgId}" 
                     aria-expanded="false" 
