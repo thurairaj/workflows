@@ -1,10 +1,19 @@
 module.exports = function(results, context) {
     console.log(process.env.GITHUB_DIR);
     console.log(process.env.REPO);
+
+    const githubDir = process.env.GITHUB_DIR;
+    const repo = process.env.REPO
+    const sanitizedResult = results.map(result => {
+        result.filePath = result.filePath.replace(githubDir, repo)
+        return result;
+    })
+
+
     return `
         <html>
             ${getHead()}
-            ${getBody(results, context)}
+            ${getBody(sanitizedResult, context)}
         </html>
     `;
 };
