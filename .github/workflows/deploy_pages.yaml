@@ -1,6 +1,8 @@
 name: Build and Deploy
 on:
   push:
+    branch: 
+      - main
 permissions:
   contents: write
   pull-requests: write
