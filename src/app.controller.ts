@@ -12,7 +12,7 @@ export class AppController {
     if (d == 1) {
       return '';
     } else {
-      return ' d';
+      return 'Let\'s do a test';
     }
 
     return 'e';
