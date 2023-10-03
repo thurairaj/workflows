@@ -1,4 +1,4 @@
-name: Create a comment on new PR
+name: Create ESLint comments
 
 on:
   pull_request:
