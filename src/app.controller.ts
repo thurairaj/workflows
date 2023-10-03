@@ -7,6 +7,14 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    const d = 1;
+    const e = 1;
+    if (d == 1) {
+      return ''; 
+    } else {
+      return 'd';
+    }
+
+    return 'e';
   }
 }

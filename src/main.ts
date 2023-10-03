@@ -6,5 +6,5 @@ async function bootstrap() {
   await app.listen(3000);
 }
 
-let k = 'test 3';
+let as = 'test 3';
 bootstrap();
