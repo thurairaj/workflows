@@ -1,18 +1,34 @@
 module.exports = function(results, context) {
+    console.log(process.env.GITHUB_DIR);
+    console.log(process.env.REPO);
+
+    const githubDir = process.env.GITHUB_DIR;
+    const repo = process.env.REPO
+    const sanitizedResult = results.map(result => {
+        result.filePath = result.filePath.replace(githubDir, repo)
+        return result;
+    })
+
+    const errorCount = results.reduce((acc, result) =>  acc + result.errorCount, 0);
+    const warningCount = results.reduce((acc, result) => acc + result.warningCount, 0)
+
+
     return `
         <html>
-            ${getHead()}
-            ${getBody(results, context)}
+            ${getHead(errorCount, warningCount)}
+            ${getBody(sanitizedResult, context)}
         </html>
     `;
 };
 
 
 
-function getHead() {
+function getHead(errors, warnings) {
     return `
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="totalWarnings" content="${warnings}" >
+            <meta name="totalErrors" content="${errors}" >
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
             <style type="text/css">
@@ -180,7 +196,7 @@ function createMessageAccordion(msg, msgId, sanitizedPath, line, sonarContext) {
     return `
         <div class="accordion mb-2 ${ isError ? 'error' : 'warning'}" id="${accordionId}">
             <div class="accordion-item rounded-0">
-                <div class="accordion-button py-1 rounded-0 ${ isError ? 'bg-danger text-white' : 'bg-warning text-dark'}" 
+                <div class="accordion-button collapsed py-1 rounded-0 ${ isError ? 'bg-danger text-white' : 'bg-warning text-dark'}" 
                     data-bs-toggle="collapse" 
                     data-bs-target="#${accordionMsgId}" 
                     aria-expanded="false" 
@@ -216,6 +232,7 @@ function createErrorCard(file, sonarContext) {
     const cardBodyId = `card-body-${sanitizedPath}`;
     const codeLines = file.source.split('\n');
     const numberOfLines = codeLines.length;
+
     const getLines = (line) => {
         const { begin, end } = _getRange(numberOfLines, line)
         return Array.from({ length: (end - begin)}, (v, idx) => begin + idx).map(idx => {
