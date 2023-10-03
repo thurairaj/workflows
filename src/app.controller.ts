@@ -10,9 +10,9 @@ export class AppController {
     const d = 1;
     const e = 1;
     if (d == 1) {
-      return ''; 
+      return '';
     } else {
-      return 'd';
+      return ' d';
     }
 
     return 'e';
