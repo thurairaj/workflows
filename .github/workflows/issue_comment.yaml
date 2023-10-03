@@ -31,7 +31,7 @@ jobs:
           WARNINGS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalWarnings./ s/.*content=.([0-9-]+).*/\1/p"`
           ERRORS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalErrors./ s/.*content=.([0-9-]+).*/\1/p"`
           echo $WARNINGS
-          BODY=`$WARNINGS:$ERRORS`
+          BODY="'$WARNINGS:$ERRORS'"
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
