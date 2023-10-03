@@ -32,7 +32,7 @@ jobs:
           ERRORS=`cat .eslint/index.html | sed -rn "/<meta .*name=.totalErrors./ s/.*content=.([0-9-]+).*/\1/p"`
           TOTAL=`echo "$WARNINGS+$ERRORS" | bc`
 
-          BODY="<h3>$TOTAL Issues has been identified in this branch</h3><h5>⛔️ $ERRORS Errors</h5><h5>🟡 $WARNINGS Warnings</h5>"
+          BODY="<h3>$TOTAL Issues has been identified in this branch</h3><h4>⛔️ $ERRORS Errors</h4><h4>🟡 $WARNINGS Warnings</h4>"
           echo $BODY
           gh api \
             --method POST \
